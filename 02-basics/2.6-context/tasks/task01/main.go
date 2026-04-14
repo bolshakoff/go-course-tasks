@@ -26,16 +26,25 @@ import (
 	"time"
 )
 
-// TODO: напиши функцию fetchData(ctx context.Context) (string, error)
+func fetchData(ctx context.Context) (string, error) {
+	time.Sleep(3 * time.Second)
+
+	select {
+	case <-ctx.Done():
+		return "", ctx.Err()
+	default:
+		return "данные получены", nil
+	}
+}
 
 func main() {
-	// TODO: создай контекст с таймаутом 1 секунда
-	// ctx, cancel := context.WithTimeout(...)
-	// defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
 
-	// TODO: вызови fetchData(ctx) и обработай результат
-
-	_ = context.Background() // убери когда начнёшь использовать context
-	_ = fmt.Println          // убери когда начнёшь использовать fmt
-	_ = time.Second          // убери когда начнёшь использовать time
+	data, err := fetchData(ctx)
+	if err != nil {
+		fmt.Printf("Запрос СКОРЕЕ ВСЕГО не успел: %s", err) // Как тип ошибки узнать? Там же просто error. =(
+	} else {
+		fmt.Printf("Обрабатываю данные: %s", data)
+	}
 }

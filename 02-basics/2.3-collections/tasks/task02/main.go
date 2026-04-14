@@ -19,10 +19,20 @@ package main
 
 import (
 	"fmt"
+	"maps"
 	"slices"
 )
 
 // TODO: напиши функцию invertMap(m map[string]int) map[int]string
+func invertMap(m map[string]int) map[int]string {
+	inv := make(map[int]string)
+
+	for k, v := range m {
+		inv[v] = k
+	}
+
+	return inv
+}
 
 func main() {
 	fruits := map[string]int{
@@ -31,12 +41,10 @@ func main() {
 		"апельсин": 3,
 	}
 
-	// TODO: вызови invertMap и сохрани результат
-	// inverted := invertMap(fruits)
+	inverted := invertMap(fruits)
 
-	// TODO: собери ключи из inverted в срез, отсортируй их
-	// и выведи каждую пару в формате: "1 -> яблоко"
-
-	_ = fruits
-	_ = slices.Sort[[]int] // убери когда будешь использовать
+	keys := slices.Sorted(maps.Keys(inverted))
+	for _, k := range keys {
+		fmt.Printf("%d -> %s\n", k, inverted[k])
+	}
 }

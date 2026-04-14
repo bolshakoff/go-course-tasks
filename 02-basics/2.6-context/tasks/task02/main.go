@@ -28,14 +28,27 @@ import (
 )
 
 // TODO: объяви тип ключа и константу
+type contextKey string
+
+const requestIDKey contextKey = "request-id"
 
 // TODO: напиши функцию middleware(next func(ctx context.Context))
+func middleware(next func(ctx context.Context)) {
+	ctx := context.Background()
+	ctx = context.WithValue(ctx, requestIDKey, "req-42")
+	next(ctx)
+}
 
 // TODO: напиши функцию handler(ctx context.Context)
+func handler(ctx context.Context) {
+	requestID := ctx.Value(requestIDKey)
+	if requestID != nil {
+		fmt.Printf("Обрабатываем запрос: %s", requestID) // надо в конце \n ??
+	} else {
+		fmt.Println("Чё-то как-то не нашёлся айдишник запроса...") // как предупреждение вывести?
+	}
+}
 
 func main() {
 	middleware(handler)
-
-	_ = context.Background() // убери когда начнёшь использовать
-	_ = fmt.Println          // убери когда начнёшь использовать
 }

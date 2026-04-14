@@ -16,17 +16,29 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // TODO: объяви блок констант с iota для статусов заказа:
 // StatusNew, StatusInWork, StatusDone, StatusCancelled
 const (
-// TODO: заполни константы здесь
+	StatusNew = iota
+	StatusInWork
+	StatusDone
+	StatusCancelled
 )
 
 // TODO: напиши функцию statusName, которая принимает int
 // и возвращает строку с названием статуса.
 // Для неизвестных значений возвращай "Неизвестный статус".
+func statusName(i int) string {
+	names := []string{"StatusNew", "StatusInWork", "StatusDone", "StatusCancelled"}
+	if i >= len(names) {
+		return "Неизвестный статус"
+	}
+	return names[i]
+}
 
 func main() {
 	statuses := []int{0, 1, 2, 3, 99}
